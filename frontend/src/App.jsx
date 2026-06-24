@@ -10,9 +10,13 @@ import Profile from './pages/Profile'
 import CreatePost from './pages/CreatePost'
 import { useUser } from "@clerk/clerk-react";
 import  Layout  from './pages/Layout'
+import Loading from './components/Loading'
 
 const App = () => {
-  const {user} = useUser()
+  const {user,isLoaded} = useUser()
+  if(!isLoaded){
+    return <Loading/>
+  }
   return (
     <>
       <Routes>
