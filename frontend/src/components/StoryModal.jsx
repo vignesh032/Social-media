@@ -1,5 +1,6 @@
-import { ArrowLeft, TextIcon, Upload } from "lucide-react";
+import { ArrowLeft, Sparkle, TextIcon, Upload } from "lucide-react";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const StoryModal = ({ setShowModal, fetchStories }) => {
   const bgColors = [
@@ -74,14 +75,38 @@ const StoryModal = ({ setShowModal, fetchStories }) => {
           ))}
         </div>
         <div className="flex gap-2 mt-4">
-          <button onClick={()=>{setMode('text');setPreviewUrl(null)}} className={`flex flex-1 items-center justify-center gap-2 p-2 rounded ${mode === 'text' ? "bg-white text-black":"bg-zinc-800"}`}>
+          <button
+            onClick={() => {
+              setMode("text");
+              setPreviewUrl(null);
+            }}
+            className={` cursor-pointer flex flex-1 items-center justify-center gap-2 p-2 rounded ${mode === "text" ? "bg-white text-black" : "bg-zinc-800"}`}
+          >
             <TextIcon size={18} /> Text
           </button>
-          <label className={`flex flex-1 items-center justify-center gap-2 p-2 cursor-pointer ${mode==='media' ? "bg-white text-black":"bg-zinc-800"}`}>
-            <input onChange={(e)=>{handleMediaUpload(e);setMode('media')}} type="file" accept="image/*,video/* " className="hidden" />
+          <label
+            className={`flex flex-1 items-center justify-center gap-2 p-2 cursor-pointer ${mode === "media" ? "bg-white text-black" : "bg-zinc-800"}`}
+          >
+            <input
+              onChange={(e) => {
+                handleMediaUpload(e);
+                setMode("media");
+              }}
+              type="file"
+              accept="image/*,video/* "
+              className="hidden"
+            />
             <Upload size={18} /> Photo/Video
           </label>
         </div>
+        <button onClick={()=>toast.promise(handleCreateStory(),{
+          loading:'Saving...',
+          success: <p>Story Added</p>,
+          error:e=><p>{e.message}</p>
+        })} className="flex items-center justify-center gap-2 text-white py-3 mt-4 w-full rounded bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 active:scale-95 transition cursor-pointer">
+          <Sparkle size={18} />
+          Create Story
+        </button>
       </div>
     </div>
   );
